@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<head>
+    <title>Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+        
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #D0E4F2; }
+        .calculator { display: grid; grid-template-columns: repeat(4, 60px); gap: 10px; background: #5A8BAE; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); border: 3px solid #41799E; position: relative; }
+        .display { grid-column: span 4; height: 80px; text-align: right; font-size: 1.5em; padding: 10px; border: 2px solid #2E5984; border-radius: 5px; background: white; font-family: 'Orbitron', sans-serif; position: relative; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+        .previous { font-size: 0.9em; color: #888; align-self: flex-end; }
+        .current { font-size: 1.5em; }
+        button { width: 60px; height: 60px; font-size: 1.2em; cursor: pointer; border: 2px solid #2E5984; border-radius: 5px; background: #91BAD6; font-family: 'Orbitron', sans-serif; }
+        button:active { background: #73A5C6; }
+        .equal, .clear { width: 130px; height: 60px; grid-column: span 2; background: #1E3F66; color: white; }
+        .footer-text { position: absolute; bottom: -30px; left: 10px; font-size: 0.8em; color: #0E2B46; font-family: 'Orbitron', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display"><span class="previous" id="previous"></span><span class="current" id="current">0</span></div>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('#')">#</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('--')">--</button>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('+')">+</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="appendValue('%')">%</button>
+        <button onclick="appendValue('-')">-</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="appendValue('^')">^</button>
+        <button onclick="appendValue('*')">*</button>
+		<button onclick="appendValue('/')">/</button>
+        <button class="clear" onclick="clearAll()">CE</button>
+        <button class="equal" onclick="calculateResult()">=</button>
+        <p class="footer-text">Created by: Skye Pineda, Joy Villegas</p>
+    </div>
+    <script>
+        let display = document.getElementById("display");
+        let previous = document.getElementById("previous");
+        let current = document.getElementById("current");
+        function appendValue(value) {
+            if (current.innerText === "0") current.innerText = "";
+            current.innerText += value;
+			adjustFontSize();
+        }
+        function clearAll() {
+            current.innerText = "0";
+            previous.innerText = "";
+			adjustFontSize();
+        }
+        function backspace() {
+            current.innerText = current.innerText.slice(0, -1) || "0";
+			adjustFontSize();
+        }
+        function calculateResult() {
+            try {
+                previous.innerText = current.innerText;
+                current.innerText = eval(current.innerText.replace('^', '**'));
+				adjustFontSize();
+            } catch {
+                current.innerText = "Error";
+            }
+        }
+		  function adjustFontSize() {
+            let maxWidth = display.clientWidth - 20;
+            let fontSize = 1.5;
+            current.style.fontSize = fontSize + "em";
+            while (current.scrollWidth > maxWidth && fontSize > 0.5) {
+                fontSize -= 0.1;
+                current.style.fontSize = fontSize + "em";
+            }
+        }
+    </script>
+</body>
+</html>
